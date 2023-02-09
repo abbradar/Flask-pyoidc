@@ -394,11 +394,13 @@ class OIDCAuthentication:
         if not result.get('active'):
             return None
         # Check if client_id is in audience claim
-        if client._client.client_id not in result['aud']:
-            # log the exception if client_id is not in audience and returns
-            # False, you can configure audience with Identity Provider
-            logger.info('Token is valid but required audience is missing.')
-            return None
+        if client._provider_configuration.check_audience != False:
+            audience_name = client._provider_configuration.check_audience or client._client.client_id
+            if audience_name not in result['aud']:
+                # log the exception if client_id is not in audience and returns
+                # False, you can configure audience with Identity Provider
+                logger.info('Token is valid but required audience is missing.')
+                return None
         # Check if the scopes associated with the access_token are the ones
         # required by the endpoint and not something else which is not
         # permitted.

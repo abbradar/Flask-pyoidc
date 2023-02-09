@@ -137,7 +137,8 @@ class ProviderConfiguration:
                  client_metadata=None,
                  auth_request_params=None,
                  session_refresh_interval_seconds=None,
-                 requests_session=None):
+                 requests_session=None,
+                 check_audience=None):
         """
         Args:
             issuer (str): OP Issuer Identifier. If this is specified discovery will be used to fetch the provider
@@ -153,6 +154,8 @@ class ProviderConfiguration:
             session_refresh_interval_seconds (int): Length of interval (in seconds) between attempted user data
                 refreshes.
             requests_session (requests.Session): custom requests object to allow for example retry handling, etc.
+            check_audience (Optional[Union[False, str]]): Expected audience in the tokens. Set to `False` to disable
+            the check. Defaults to the app client id.
         """
 
         if not issuer and not provider_metadata:
@@ -173,6 +176,7 @@ class ProviderConfiguration:
         # For session persistence
         self.client_settings = ClientSettings(timeout=self.DEFAULT_REQUEST_TIMEOUT,
                                               requests_session=requests_session or requests.Session())
+        self.check_audience = check_audience
 
     def ensure_provider_metadata(self, client: Client):
         if not self._provider_metadata:
