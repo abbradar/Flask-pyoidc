@@ -147,7 +147,7 @@ class ProviderConfiguration:
             userinfo_http_method (Optional[str]): HTTP method (GET or POST) to use when sending the UserInfo Request.
                 If `none` is specified, no userinfo request will be sent.
             client_registration_info (ClientRegistrationInfo): Client metadata to register your app
-                dynamically with the provider. Either this or `registered_client_metadata` must be specified.
+                dynamically with the provider. Either this or `client_metadata` must be specified.
             client_metadata (ClientMetadata): Client metadata if your app is statically
                 registered with the provider. Either this or `client_registration_info` must be specified.
             auth_request_params (dict): Extra parameters that should be included in the authentication request.
