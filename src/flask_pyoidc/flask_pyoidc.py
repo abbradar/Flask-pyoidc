@@ -19,6 +19,7 @@ import logging
 import time
 from typing import Optional
 from urllib.parse import parse_qsl
+from copy import copy
 
 import flask
 import importlib_resources
@@ -110,7 +111,7 @@ class OIDCAuthentication:
                     'post_logout_redirect_uris']}''')
         client.register()
 
-    def _authenticate(self, client, interactive=True):
+    def _authenticate(self, client, interactive=True, extra_auth_params=None):
         if not client.is_registered():
             self._register_client(client)
 
@@ -118,7 +119,10 @@ class OIDCAuthentication:
 
         # Use silent authentication for session refresh
         # This will not show login prompt to the user
-        extra_auth_params = {}
+        if extra_auth_params is None:
+            extra_auth_params = {}
+        else:
+            extra_auth_params = copy(extra_auth_params)
         if not interactive:
             extra_auth_params['prompt'] = 'none'
 
