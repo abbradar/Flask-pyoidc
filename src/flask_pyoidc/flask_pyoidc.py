@@ -464,7 +464,7 @@ class OIDCAuthentication:
                     g.current_token_identity = token_introspection_result.to_dict()
                     return view_func(*args, **kwargs)
                 # Forbid access if the access token is invalid.
-                flask.abort(403)
+                flask.abort(401)
 
             return wrapper
 
